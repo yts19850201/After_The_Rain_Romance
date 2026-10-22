@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="After the Rain - Romance"
-config/version="0.2.0-dev34"
+config/version="0.2.0"
 run/main_scene="res://scenes/cafe_life_261022.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 

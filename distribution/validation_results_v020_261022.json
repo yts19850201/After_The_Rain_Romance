@@ -1,0 +1,27 @@
+{
+  "verified_on": "2026-10-22",
+  "version": "0.2.0",
+  "archive_sha256": "49F5F503F05AF3121718AC9E4207EE6E4938671C41FC05DD6B49EC1A23C46857",
+  "separate_extracted_folder": true,
+  "editor_required": false,
+  "verified_manifest_files": 8,
+  "checks": [
+    {
+      "mode": "write",
+      "passed": true,
+      "result": "RELEASE_SMOKE: PASS (0 failures)"
+    },
+    {
+      "mode": "read",
+      "passed": true,
+      "result": "RELEASE_SMOKE: PASS (0 failures)"
+    },
+    {
+      "mode": "render",
+      "passed": true,
+      "result": "RELEASE_SMOKE: PASS (0 failures)"
+    }
+  ],
+  "human_reading_minutes": null,
+  "external_player_feedback": "not_collected"
+}

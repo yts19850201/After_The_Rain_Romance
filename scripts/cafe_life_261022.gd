@@ -15,6 +15,7 @@ var continue_week_button: Button
 var journal_button: Button
 var ending_gallery_button: Button
 var minjae_art: Texture2D
+var seen_week_endings: Array = []
 
 
 func _ready() -> void:
@@ -22,6 +23,11 @@ func _ready() -> void:
 	week.configure(life_data)
 	super._ready()
 	_build_life_ui()
+	var record: Dictionary = _read_file("week_endings_261022.json")
+	if record.get("schema") == 1 and record.get("seen_endings") is Array:
+		for id in record.seen_endings:
+			if id in ["W01", "W02", "W03"] and not seen_week_endings.has(id):
+				seen_week_endings.append(id)
 	show_menu()
 
 
@@ -83,7 +89,7 @@ func _show_life_state() -> void:
 	relationship_panel.show()
 	continue_week_button.hide()
 	journal_button.hide()
-	if week.phase == "event":
+	if week.phase in ["event", "ending"]:
 		life_hub.hide()
 		dialogue_panel.show()
 		phase = "life_event"
@@ -94,6 +100,13 @@ func _show_life_state() -> void:
 			button.release_focus()
 		life_start_button.release_focus()
 		_show_line()
+		if week.phase == "ending":
+			$Chapter/Label.text = ("엔딩 감상 · " if gallery_replay else "한 주의 마지막 · ") + life_data.events[week.event_id].title
+			_play_music("ending")
+			if gallery_replay:
+				day_card.hide()
+				relationship_panel.hide()
+				toolbar.hide()
 	elif week.phase == "week_complete":
 		_show_complete()
 	else:
@@ -141,14 +154,14 @@ func _show_line() -> void:
 func _finish_reveal() -> void:
 	super._finish_reveal()
 	if life_active and line_index == current_lines.size() - 1:
-		next_button.text = "카페로 돌아가기"
+		next_button.text = ("감상 마치기" if gallery_replay else "한 주 마치기") if week.phase == "ending" else "카페로 돌아가기"
 
 
 func advance() -> void:
 	if not life_active:
 		super.advance()
 		return
-	if not overlay_kind.is_empty() or transitioning or week.phase != "event" or mode != Mode.DIALOGUE:
+	if not overlay_kind.is_empty() or transitioning or week.phase not in ["event", "ending"] or mode != Mode.DIALOGUE:
 		return
 	if typing:
 		_finish_reveal()
@@ -158,6 +171,15 @@ func advance() -> void:
 		line_index += 1
 		_show_line()
 	else:
+		if week.phase == "ending":
+			if gallery_replay:
+				_finish_ending()
+				return
+			var id: String = week.event_id
+			if not seen_week_endings.has(id):
+				seen_week_endings.append(id)
+				if not _write_file("week_endings_261022.json", {"schema": 1, "seen_endings": seen_week_endings}):
+					_notify("엔딩 기록을 저장하지 못했습니다. 저장 폴더를 확인해 주세요.")
 		week.finish_event()
 		_show_life_state()
 
@@ -194,15 +216,16 @@ func _show_complete() -> void:
 	dialogue_panel.hide()
 	choices_panel.hide()
 	complete_panel.show()
-	ending_gallery_button.hide()
+	ending_gallery_button.show()
 	continue_week_button.hide()
 	journal_button.show()
-	$Complete/Margin/Content/Title.text = "함께 보낸 한 주"
+	var ending: Dictionary = _week_ending(week.resolved_ending())
+	$Complete/Margin/Content/Title.text = ending.title
 	var viewed: int = 0
 	for id in life_data.episodes:
 		if week.seen.has(id):
 			viewed += 1
-	$Complete/Margin/Content/Summary.text = "호감도 %d / 10 · 함께한 행동 %d회\n추가 이야기 %d / 4개 감상\n쌓인 문장과 만남을 한 주의 기록에 남겼습니다." % [week.score(), week.history.size(), viewed]
+	$Complete/Margin/Content/Summary.text = "%s\n호감도 %d / 10 · 행동 %d회 · 추가 이야기 %d / 4개" % [ending.summary, week.score(), week.history.size(), viewed]
 	replay_button.text = "한 주 다시 보내기"
 	relationship_panel.clear_feedback()
 	replay_button.grab_focus()
@@ -261,14 +284,63 @@ func _close_overlay() -> void:
 
 
 func _open_gallery() -> void:
-	if life_active:
+	if mode not in [Mode.MENU, Mode.COMPLETE]:
 		return
-	super._open_gallery()
+	_open_overlay("gallery", "엔딩 감상")
+	_label("끝까지 읽은 엔딩만 감상할 수 있습니다. 감상은 진행과 저장을 바꾸지 않습니다.", 18)
+	_label("첫 만남 · 기존 이야기", 22)
+	for id in ["E01", "E02"]:
+		var unlocked: bool = seen_endings.has(id)
+		var button := _button(story[id].title if unlocked else "미확인 엔딩", _replay_ending.bind(id), overlay_content)
+		button.disabled = not unlocked
+	_label("새로운 한 주", 22)
+	for ending in life_data.endings:
+		var unlocked: bool = seen_week_endings.has(ending.id)
+		var button := _button(ending.title if unlocked else "미확인 주간 엔딩", _replay_ending.bind(ending.id), overlay_content)
+		button.disabled = not unlocked
+	_close_button()
 
 
 func _replay_ending(id: String) -> void:
-	if not life_active:
-		super._replay_ending(id)
+	if mode not in [Mode.MENU, Mode.COMPLETE] or gallery_replay:
+		return
+	if not seen_endings.has(id) and not seen_week_endings.has(id):
+		return
+	gallery_return = {"menu": mode == Mode.MENU, "snapshot": {} if mode == Mode.MENU else snapshot()}
+	_close_overlay()
+	gallery_replay = true
+	if id.begins_with("W"):
+		life_active = true
+		week.reset()
+		week.day = 5
+		week.phase = "ending"
+		week.event_id = id
+		_show_life_state()
+	else:
+		life_active = false
+		_hide_life_ui()
+		relationship_panel.configure_rules(relationship_rules)
+		_enter_scene(id)
+
+
+func _finish_ending() -> void:
+	if gallery_replay:
+		var previous: Dictionary = gallery_return.duplicate(true)
+		gallery_replay = false
+		if previous.get("menu", true):
+			show_menu()
+		else:
+			_restore(previous.snapshot)
+			_show_complete()
+		return
+	super._finish_ending()
+
+
+func _week_ending(id: String) -> Dictionary:
+	for ending in life_data.endings:
+		if ending.id == id:
+			return ending
+	return {}
 
 
 func _open_credits() -> void:
@@ -285,18 +357,18 @@ func snapshot() -> Dictionary:
 	if not life_active:
 		return super.snapshot()
 	var value: Dictionary = week.state()
-	value.line_index = line_index if week.phase == "event" else 0
-	value.typing = typing if week.phase == "event" else false
-	value.visible_characters = body.visible_characters if week.phase == "event" else -1
+	value.line_index = line_index if week.phase in ["event", "ending"] else 0
+	value.typing = typing if week.phase in ["event", "ending"] else false
+	value.visible_characters = body.visible_characters if week.phase in ["event", "ending"] else -1
 	return value
 
 
 func _valid_snapshot(value: Dictionary) -> bool:
-	if value.get("schema") != 2:
+	if value.get("schema") != 2 and value.get("schema") != 3:
 		return super._valid_snapshot(value)
 	if not week.valid(value) or not _integer(value.get("line_index")) or not _integer(value.get("visible_characters")) or not value.get("typing") is bool:
 		return false
-	if value.phase != "event":
+	if value.phase not in ["event", "ending"]:
 		return value.line_index == 0 and value.visible_characters == -1 and not value.typing
 	var rows: Array = life_data.events[value.event_id].lines
 	var index: int = int(value.line_index)
@@ -307,7 +379,7 @@ func _valid_snapshot(value: Dictionary) -> bool:
 
 
 func _restore(value: Dictionary) -> void:
-	if value.schema != 2:
+	if value.schema != 2 and value.schema != 3:
 		life_active = false
 		_hide_life_ui()
 		relationship_panel.configure_rules(relationship_rules)
@@ -316,9 +388,12 @@ func _restore(value: Dictionary) -> void:
 	life_active = true
 	week.restore(value)
 	_show_life_state()
-	if week.phase == "event":
-		line_index = int(value.line_index)
+	if week.phase in ["event", "ending"]:
+		var migrated: bool = value.schema == 2 and value.phase == "week_complete"
+		line_index = 0 if migrated else int(value.line_index)
 		_show_line()
+		if migrated:
+			return
 		if value.typing:
 			typing = true
 			revealed_count = float(value.visible_characters)
@@ -328,14 +403,14 @@ func _restore(value: Dictionary) -> void:
 
 
 func _slot_caption(value: Dictionary, saved_at: String) -> String:
-	if value.schema == 2:
-		return "새로운 한 주 · %d일차 %s · %s" % [int(value.day), {"hub": "행동 선택", "event": life_data.events.get(value.event_id, {}).get("title", "대화"), "week_complete": "한 주 마무리"}.get(value.phase, ""), saved_at]
+	if value.schema == 2 or value.schema == 3:
+		return "새로운 한 주 · %d일차 %s · %s" % [int(value.day), {"hub": "행동 선택", "event": life_data.events.get(value.event_id, {}).get("title", "대화"), "ending": "마지막 이야기", "week_complete": "한 주 마무리"}.get(value.phase, ""), saved_at]
 	return super._slot_caption(value, saved_at)
 
 
 func _build_life_ui() -> void:
 	minjae_art = load(life_data.characters.minjae.portrait)
-	$Menu/Margin/Content/Subtitle.text = "32~34단계 실습 · 함께 보내는 한 주"
+	$Menu/Margin/Content/Subtitle.text = "v0.2.0 · 35단계 · 세 가지 한 주의 결말"
 	start_button.text = "첫 만남 읽기 · 기존 이야기"
 	life_start_button = _button("새로운 한 주 시작", start_life, $Menu/Margin/Content)
 	$Menu/Margin/Content.move_child(life_start_button, $Menu/Margin/Content/Start.get_index())

@@ -83,6 +83,10 @@ func start_episode(id: String) -> bool:
 	return true
 
 func finish_event() -> void:
+	if phase == "ending":
+		phase = "week_complete"
+		event_id = ""
+		return
 	if phase != "event":
 		return
 	if not event_id.begins_with("action_") and not seen.has(event_id):
@@ -94,7 +98,8 @@ func next_day() -> bool:
 	if phase != "hub":
 		return false
 	if day == data.days.size():
-		phase = "week_complete"
+		phase = "ending"
+		event_id = resolved_ending()
 		return true
 	day += 1
 	if day == 2 and not seen.has("intro_minjae"):
@@ -102,8 +107,24 @@ func next_day() -> bool:
 		event_id = "intro_minjae"
 	return true
 
+func resolved_ending(entries: Variant = null, viewed: Variant = null) -> String:
+	if entries == null:
+		entries = history
+	if viewed == null:
+		viewed = seen
+	for ending in data.endings:
+		if score(entries) < int(ending.min_affection):
+			continue
+		var ready: bool = true
+		for id in ending.requires_seen:
+			if not viewed.has(id):
+				ready = false
+		if ready:
+			return ending.id
+	return "W03"
+
 func state() -> Dictionary:
-	return {"schema": 2, "life_version": int(data.version), "scene_id": "LIFE", "day": day, "history": history.duplicate(true), "seen_events": seen.duplicate(), "phase": phase, "event_id": event_id, "affection": score()}
+	return {"schema": 3, "life_version": int(data.version), "scene_id": "LIFE", "day": day, "history": history.duplicate(true), "seen_events": seen.duplicate(), "phase": phase, "event_id": event_id, "affection": score()}
 
 func restore(value: Dictionary) -> void:
 	day = int(value.day)
@@ -113,16 +134,23 @@ func restore(value: Dictionary) -> void:
 	seen = value.seen_events.duplicate()
 	phase = value.phase
 	event_id = value.event_id
+	# 34단계의 마무리 저장도 새 엔딩을 처음부터 읽도록 옮깁니다.
+	if value.schema == 2 and phase == "week_complete":
+		phase = "ending"
+		event_id = resolved_ending()
 
 func _integer(value: Variant) -> bool:
 	return (value is int or value is float) and is_finite(float(value)) and float(value) == floorf(float(value))
 
 func valid(value: Dictionary) -> bool:
-	if value.get("schema") != 2 or value.get("life_version") != data.version or value.get("scene_id") != "LIFE":
+	var legacy: bool = value.get("schema") == 2 and value.get("life_version") == 1
+	if not legacy and not (value.get("schema") == 3 and value.get("life_version") == data.version):
+		return false
+	if value.get("scene_id") != "LIFE":
 		return false
 	if not _integer(value.get("day")) or int(value.day) < 1 or int(value.day) > data.days.size():
 		return false
-	if not value.get("history") is Array or not value.get("seen_events") is Array or value.get("phase") not in ["hub", "event", "week_complete"] or not value.get("event_id") is String:
+	if not value.get("history") is Array or not value.get("seen_events") is Array or value.get("phase") not in (["hub", "event", "week_complete"] if legacy else ["hub", "event", "ending", "week_complete"]) or not value.get("event_id") is String:
 		return false
 	var entries: Array = value.history
 	if entries.size() > data.days.size() * int(data.actions_per_day):
@@ -158,12 +186,16 @@ func valid(value: Dictionary) -> bool:
 		return false
 	if value.phase == "week_complete" and int(value.day) != data.days.size():
 		return false
+	if value.phase == "ending":
+		return int(value.day) == data.days.size() and value.event_id == resolved_ending(entries, viewed)
 	if value.phase != "event":
 		return value.event_id.is_empty()
 	if not data.events.has(value.event_id):
 		return false
 	if value.event_id.begins_with("action_"):
 		return not entries.is_empty() and int(entries.back().day) == int(value.day) and data.actions[entries.back().action].event_id == value.event_id
+	if value.event_id != "intro_minjae" and not data.episodes.has(value.event_id):
+		return false
 	if viewed.has(value.event_id) or not eligible(value.event_id, entries, viewed, int(value.day)):
 		return false
 	return value.event_id != "intro_minjae" or int(value.day) == 2

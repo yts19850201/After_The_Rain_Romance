@@ -207,6 +207,10 @@ func _run() -> void:
 	_act("help")
 	_act("talk")
 	game.finish_day()
+	for index in range(100):
+		if game.week.phase != "ending":
+			break
+		game.advance()
 	_check(game.week.phase == "week_complete" and game.mode == game.Mode.COMPLETE and game.week.score() == 10, "Week did not complete at max score")
 	await _layout()
 	await _capture("summary")
@@ -256,6 +260,10 @@ func _run() -> void:
 		game.finish_day()
 		if game.week.phase == "event":
 			_finish_event()
+	for index in range(100):
+		if game.week.phase != "ending":
+			break
+		game.advance()
 	_check(game.week.phase == "week_complete" and game.week.score() == 0, "Rest-only week softlocked")
 	# Every new dialogue line fits at the minimum supported window size.
 	game.start_life()

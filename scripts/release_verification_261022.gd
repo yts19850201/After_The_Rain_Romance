@@ -85,6 +85,9 @@ func _run() -> void:
 		game._finish_reveal()
 		_finish_part()
 		_check(game.active_scene_id == "S03" and game.affection == 2, "Exported resume duplicated points")
+		var weekly: Node = load("res://scripts/week_verification_261022.gd").new()
+		add_child(weekly)
+		failures += weekly.run(game, true)
 		await _finish()
 		return
 	DirAccess.make_dir_recursive_absolute(data_root)
@@ -151,6 +154,21 @@ func _run() -> void:
 	file.store_string("{invalid")
 	file.close()
 	_check(not game.load_slot(2) and game.snapshot() == frozen, "Exported corrupt file changed progress")
+	var weekly: Node = load("res://scripts/week_verification_261022.gd").new()
+	add_child(weekly)
+	failures += weekly.run(game)
+	if not screenshot_root.is_empty():
+		game.start_life()
+		await _capture("week_hub_v020")
+		weekly.prepare_romance()
+		weekly.day()
+		game._finish_reveal()
+		await _capture("week_ending_v020")
+		weekly.finish_dialogue()
+		await _capture("week_complete_v020")
+		game._open_gallery()
+		await _capture("week_gallery_v020")
+		game._close_overlay()
 	await _finish()
 
 func _finish() -> void:
