@@ -1,25 +1,160 @@
 {
   "schema_version": 1,
-  "status": "planned_not_created",
+  "status": "required_assets_integrated_stage26",
   "created_on": "2026-10-22",
-  "notes": "ID는 제작 관리용입니다. 실제 파일명은 제작일에 맞춰 정합니다.",
+  "notes": "실제 적용 파일의 출처와 조건은 assets/ASSET_SOURCES_261022.md 참조. 선택적 엔딩 CG는 보류.",
   "assets": [
-    { "id": "bg_cafe_rain", "kind": "background", "description": "창밖으로 비가 보이는 작은 카페의 낮", "required": true, "status": "planned", "source": null, "license": null },
-    { "id": "bg_cafe_evening", "kind": "background", "description": "같은 카페의 비가 그친 저녁, 낮 배경과 구도 공유", "required": true, "status": "planned", "source": null, "license": null },
-    { "id": "expr_neutral", "kind": "character_variant", "character_id": "seoyun", "description": "차분한 기본 표정, 기본 포즈", "required": true, "status": "planned", "source": null, "license": null },
-    { "id": "expr_smile", "kind": "character_variant", "character_id": "seoyun", "description": "미소, 기본 포즈 공유", "required": true, "status": "planned", "source": null, "license": null },
-    { "id": "expr_thoughtful", "kind": "character_variant", "character_id": "seoyun", "description": "생각하는 표정, 기본 포즈 공유", "required": true, "status": "planned", "source": null, "license": null },
-    { "id": "expr_shy", "kind": "character_variant", "character_id": "seoyun", "description": "수줍은 표정, 기본 포즈 공유", "required": true, "status": "planned", "source": null, "license": null },
-    { "id": "cg_next_cup", "kind": "ending_cg", "description": "카페 밖 다음 약속을 보여주는 엔딩 그림 1장", "required": false, "status": "deferred", "fallback_background_id": "bg_cafe_evening", "source": null, "license": null },
-    { "id": "bgm_cafe", "kind": "music", "description": "대화를 가리지 않는 카페용 반복 음악", "required": true, "status": "planned", "source": null, "license": null },
-    { "id": "bgm_ending", "kind": "music", "description": "두 엔딩에서 공통 사용 가능한 짧은 음악", "required": true, "status": "planned", "source": null, "license": null },
-    { "id": "sfx_confirm", "kind": "sfx", "description": "대사 확인", "required": true, "status": "planned", "source": null, "license": null },
-    { "id": "sfx_select", "kind": "sfx", "description": "선택지 확정", "required": true, "status": "planned", "source": null, "license": null },
-    { "id": "sfx_transition", "kind": "sfx", "description": "장면 전환", "required": true, "status": "planned", "source": null, "license": null }
+    {
+      "id": "bg_cafe_rain",
+      "kind": "background",
+      "description": "창밖으로 비가 보이는 작은 카페의 낮",
+      "required": true,
+      "status": "integrated",
+      "source": "OpenAI built-in image_gen, 2026-10-22",
+      "license": "Applicable OpenAI service terms; see ASSET_SOURCES_261022.md",
+      "path": "assets/art/cafe_rain_261022.png",
+      "sha256": "1458300444B076AB347F43C51AC1DF7359E3F6D4F52F232607D99B3CA78844ED"
+    },
+    {
+      "id": "bg_cafe_evening",
+      "kind": "background",
+      "description": "같은 카페의 비가 그친 저녁, 낮 배경과 구도 공유",
+      "required": true,
+      "status": "integrated",
+      "source": "OpenAI built-in image_gen, 2026-10-22",
+      "license": "Applicable OpenAI service terms; see ASSET_SOURCES_261022.md",
+      "path": "assets/art/cafe_evening_261022.png",
+      "sha256": "F1C5AF606695A99453E588134B25C964FDC521C117F5980EC6575B6C714741BB"
+    },
+    {
+      "id": "expr_neutral",
+      "kind": "character_variant",
+      "character_id": "seoyun",
+      "description": "차분한 기본 표정, 기본 포즈",
+      "required": true,
+      "status": "integrated",
+      "source": "OpenAI built-in image_gen, 2026-10-22",
+      "license": "Applicable OpenAI service terms; see ASSET_SOURCES_261022.md",
+      "path": "assets/art/seoyun_neutral_261022.png",
+      "sha256": "A5CC8FDC732C897CFAB7D7600B4B3B84EE87FC954DBB6C895234FD7A3C8A7D63"
+    },
+    {
+      "id": "expr_smile",
+      "kind": "character_variant",
+      "character_id": "seoyun",
+      "description": "미소, 기본 포즈 공유",
+      "required": true,
+      "status": "integrated",
+      "source": "OpenAI built-in image_gen, 2026-10-22",
+      "license": "Applicable OpenAI service terms; see ASSET_SOURCES_261022.md",
+      "path": "assets/art/seoyun_smile_261022.png",
+      "sha256": "9B29643661D9F82C61D000A82BDE64F23C2187A88037CF84579FC4A940ECA9B4"
+    },
+    {
+      "id": "expr_thoughtful",
+      "kind": "character_variant",
+      "character_id": "seoyun",
+      "description": "생각하는 표정, 기본 포즈 공유",
+      "required": true,
+      "status": "integrated",
+      "source": "OpenAI built-in image_gen, 2026-10-22",
+      "license": "Applicable OpenAI service terms; see ASSET_SOURCES_261022.md",
+      "path": "assets/art/seoyun_thoughtful_261022.png",
+      "sha256": "E50A3BCD1DD5802ABC1064068B1B99046DCF14DC828C1FC04A8211FB09A67699"
+    },
+    {
+      "id": "expr_shy",
+      "kind": "character_variant",
+      "character_id": "seoyun",
+      "description": "수줍은 표정, 기본 포즈 공유",
+      "required": true,
+      "status": "integrated",
+      "source": "OpenAI built-in image_gen, 2026-10-22",
+      "license": "Applicable OpenAI service terms; see ASSET_SOURCES_261022.md",
+      "path": "assets/art/seoyun_shy_261022.png",
+      "sha256": "F52C57CCE20FF3EC53D0CF9113B2796281F3CA38ABB7039789126336DFAFFE57"
+    },
+    {
+      "id": "cg_next_cup",
+      "kind": "ending_cg",
+      "description": "카페 밖 다음 약속을 보여주는 엔딩 그림 1장",
+      "required": false,
+      "status": "deferred",
+      "fallback_background_id": "bg_cafe_evening",
+      "source": null,
+      "license": null
+    },
+    {
+      "id": "bgm_cafe",
+      "kind": "music",
+      "description": "대화를 가리지 않는 카페용 반복 음악",
+      "required": true,
+      "status": "integrated",
+      "source": "Original synthesis: tools/generate_audio_261022.gd",
+      "license": "Project-authored for inclusion in this game; no third-party samples",
+      "path": "assets/audio/cafe_261022.wav",
+      "sha256": "123BFDC9AB54E8570D5ED859CA7F21BE44EFC1A238E481B952B5F0687F56C952"
+    },
+    {
+      "id": "bgm_ending",
+      "kind": "music",
+      "description": "두 엔딩에서 공통 사용 가능한 짧은 음악",
+      "required": true,
+      "status": "integrated",
+      "source": "Original synthesis: tools/generate_audio_261022.gd",
+      "license": "Project-authored for inclusion in this game; no third-party samples",
+      "path": "assets/audio/ending_261022.wav",
+      "sha256": "4C564E67D89B20D2DB744D83AC836C9F49B6326C0EBA4193835EA0FBC7C60EC7"
+    },
+    {
+      "id": "sfx_confirm",
+      "kind": "sfx",
+      "description": "대사 확인",
+      "required": true,
+      "status": "integrated",
+      "source": "Original synthesis: tools/generate_audio_261022.gd",
+      "license": "Project-authored for inclusion in this game; no third-party samples",
+      "path": "assets/audio/confirm_261022.wav",
+      "sha256": "1F929217611F990527E9744C959A4127FCD5058B34551B71E5A6BE5953DBEF28"
+    },
+    {
+      "id": "sfx_select",
+      "kind": "sfx",
+      "description": "선택지 확정",
+      "required": true,
+      "status": "integrated",
+      "source": "Original synthesis: tools/generate_audio_261022.gd",
+      "license": "Project-authored for inclusion in this game; no third-party samples",
+      "path": "assets/audio/select_261022.wav",
+      "sha256": "7850EA1DA8BA3DBB0F6E9263F3143C6BEA5D8D960E9D18DCFE66B2B4A34BC323"
+    },
+    {
+      "id": "sfx_transition",
+      "kind": "sfx",
+      "description": "장면 전환",
+      "required": true,
+      "status": "integrated",
+      "source": "Original synthesis: tools/generate_audio_261022.gd",
+      "license": "Project-authored for inclusion in this game; no third-party samples",
+      "path": "assets/audio/transition_261022.wav",
+      "sha256": "81405BF695ABE209B8AC57F08910C67F18ABE59464A9E313B32CBFC19B637072"
+    },
+    {
+      "id": "font_noto_kr",
+      "kind": "font",
+      "description": "한국어 표시용 Noto Sans KR 가변 글꼴",
+      "required": true,
+      "status": "integrated",
+      "path": "assets/fonts/NotoSansKR_261022.ttf",
+      "source": "https://github.com/google/fonts/tree/main/ofl/notosanskr",
+      "license": "SIL Open Font License 1.1",
+      "license_file": "assets/fonts/NotoSansKR_OFL_261022.txt",
+      "sha256": "194018E6B2B293A7964F037B25C0249CE1418BC9AB3C971060A03AA57861E252"
+    }
   ],
   "ui_plan": {
     "prototype": "Godot 기본 컨트롤과 임시 색상으로 구성",
-    "font": "시제품은 한국어를 표시할 수 있는 로컬 시스템 글꼴 사용, 배포 글꼴과 이용 조건은 26단계에서 선정",
+    "font": "Noto Sans KR weight 400, bundled under OFL 1.1",
     "custom_ui_image_required_for_prototype": false
   }
 }

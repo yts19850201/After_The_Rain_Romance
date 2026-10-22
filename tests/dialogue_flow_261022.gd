@@ -77,7 +77,7 @@ func _capture(name_suffix: String) -> void:
 
 
 func _run() -> void:
-	var game = load(ProjectSettings.get_setting("application/run/main_scene")).instantiate()
+	var game = load("res://scenes/scene01_261022.tscn").instantiate()
 	root.add_child(game)
 	await _frames(6)
 	_check(game.mode == game.Mode.MENU and game.menu.visible and not game.dialogue_panel.visible, "Initial menu state is wrong.")

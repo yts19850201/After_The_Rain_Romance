@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "stage": 21,
-  "status": "planning_draft",
+  "stage": 26,
+  "status": "implemented_through_stage26",
   "created_on": "2026-10-22",
   "project_code": "after_the_rain",
   "working_title": "비가 그치면, 한 잔 더",
@@ -52,8 +52,10 @@
     "common_dialogue_units_target": 130,
     "dialogue_units_per_ending_target": 20,
     "total_script_characters_target": { "min": 6000, "max": 8000, "includes_spaces": true },
-    "full_dialogue_written": false,
+    "full_dialogue_written": true,
     "runtime_implementation_started": true,
-    "runtime_status": "S01_and_C01_prototype_ready"
+    "runtime_status": "S01_S02_S03_C01_C02_C03_E01_E02_complete_with_save_gallery_and_assets",
+    "actual_dialogue_units_all_branches": 171,
+    "actual_dialogue_characters_all_branches": 8001
   }
 }
