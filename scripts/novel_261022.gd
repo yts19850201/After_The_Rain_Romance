@@ -517,7 +517,7 @@ func _open_slots(saving: bool) -> void:
 		var valid: bool = _valid_snapshot(state)
 		var caption: String = "비어 있음"
 		if FileAccess.file_exists(_path("save_%d_261022.json" % slot)):
-			caption = "%s · %s · %s" % [story[state.scene_id].title, "대화 %d" % (int(state.line_index) + 1), saved.get("saved_at", "")] if valid else "읽을 수 없는 저장 파일"
+			caption = _slot_caption(state, saved.get("saved_at", "")) if valid else "읽을 수 없는 저장 파일"
 		_label("슬롯 %d  |  %s" % [slot, caption], 19)
 		var row := HBoxContainer.new()
 		overlay_content.add_child(row)
@@ -529,6 +529,10 @@ func _open_slots(saving: bool) -> void:
 		var load_button := _button("불러오기", func(): load_slot(slot), row)
 		load_button.disabled = not valid
 	_close_button()
+
+
+func _slot_caption(state: Dictionary, saved_at: String) -> String:
+	return "%s · 대화 %d · %s" % [story[state.scene_id].title, int(state.line_index) + 1, saved_at]
 
 
 func _open_gallery() -> void:

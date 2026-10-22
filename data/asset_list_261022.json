@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "required_assets_integrated_stage26",
+  "status": "required_assets_integrated_stage34",
   "created_on": "2026-10-22",
   "notes": "실제 적용 파일의 출처와 조건은 assets/ASSET_SOURCES_261022.md 참조. 선택적 엔딩 CG는 보류.",
   "assets": [
@@ -150,6 +150,18 @@
       "license": "SIL Open Font License 1.1",
       "license_file": "assets/fonts/NotoSansKR_OFL_261022.txt",
       "sha256": "194018E6B2B293A7964F037B25C0249CE1418BC9AB3C971060A03AA57861E252"
+    },
+    {
+      "id": "minjae_neutral",
+      "kind": "character_variant",
+      "character_id": "minjae",
+      "description": "30세 서점 직원 민재의 기본 표정",
+      "required": true,
+      "status": "integrated",
+      "path": "assets/art/minjae_neutral_261022.png",
+      "source": "OpenAI built-in image_gen, 2026-10-22; own Seoyun art used as style reference",
+      "license": "Applicable OpenAI service terms; see ASSET_SOURCES_261022.md",
+      "sha256": "94B833480060349AC51C630C6BF535182C2533F4CC0F47E70BECE61774003D48"
     }
   ],
   "ui_plan": {

@@ -90,6 +90,12 @@ func _name_for(score: int) -> String:
 	return result
 
 
+func configure_rules(configuration: Dictionary) -> void:
+	rules = configuration
+	progress.max_value = int(rules.get("max", 3))
+	set_state(displayed_score)
+
+
 func set_state(score: int, announce: bool = false) -> void:
 	var previous_score: int = displayed_score
 	displayed_score = clampi(score, 0, int(progress.max_value))

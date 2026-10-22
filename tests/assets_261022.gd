@@ -17,12 +17,12 @@ func _initialize() -> void:
 		context.start(HashingContext.HASH_SHA256)
 		context.update(FileAccess.get_file_as_bytes("res://" + asset.path))
 		_check(context.finish().hex_encode().to_upper() == asset.sha256, "Asset hash mismatch: " + asset.id)
-	for expression in ["neutral", "smile", "thoughtful", "shy"]:
+	for sprite in ["seoyun_neutral", "seoyun_smile", "seoyun_thoughtful", "seoyun_shy", "minjae_neutral"]:
 		var picture := Image.new()
-		_check(picture.load_png_from_buffer(FileAccess.get_file_as_bytes("res://assets/art/seoyun_%s_261022.png" % expression)) == OK, "Sprite PNG unreadable")
+		_check(picture.load_png_from_buffer(FileAccess.get_file_as_bytes("res://assets/art/%s_261022.png" % sprite)) == OK, "Sprite PNG unreadable")
 		_check(picture.get_size() == Vector2i(1024, 1536), "Sprite dimensions changed")
 		for point in [Vector2i(0, 0), Vector2i(1023, 0), Vector2i(0, 1535), Vector2i(1023, 1535), Vector2i(40, 600)]:
-			_check(picture.get_pixelv(point).a == 0.0, "Non-transparent sprite edge: " + expression)
+			_check(picture.get_pixelv(point).a == 0.0, "Non-transparent sprite edge: " + sprite)
 	for name_value in ["cafe", "ending", "confirm", "select", "transition"]:
 		var wav: AudioStreamWAV = load("res://assets/audio/%s_261022.wav" % name_value)
 		_check(wav.mix_rate == 22050 and wav.format == AudioStreamWAV.FORMAT_16_BITS, "Unexpected audio format")
