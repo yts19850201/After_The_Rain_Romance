@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "stage": 21,
+  "status": "planning_draft",
+  "created_on": "2026-10-22",
+  "project_code": "after_the_rain",
+  "working_title": "비가 그치면, 한 잔 더",
+  "format": "2d_visual_novel",
+  "target_play_minutes": { "min": 10, "max": 20, "measured": false },
+  "characters": [
+    { "id": "player", "name": null, "age": 29, "role": "player", "gender": "unspecified", "viewpoint": "first_person", "occupation": "프리랜서 일러스트레이터", "portrait_required": false },
+    { "id": "seoyun", "name": "서윤", "age": 28, "role": "love_interest", "occupation": "작은 카페 운영자", "portrait_required": true }
+  ],
+  "affection": { "initial": 0, "min": 0, "max": 3, "display_number": false },
+  "start_scene_id": "S01",
+  "scenes": [
+    { "id": "S01", "kind": "common", "title": "비를 피한 자리", "background_id": "bg_cafe_rain", "choice_id": "C01", "synopsis": "비를 피해 들어간 카페에서 서윤이 고른 책으로 첫 대화를 시작한다." },
+    { "id": "S02", "kind": "common", "title": "다시 온 이유", "background_id": "bg_cafe_rain", "choice_id": "C02", "synopsis": "재방문한 주인공이 책 모임 안내물을 고민하는 서윤과 취향과 작업 이야기를 나눈다." },
+    { "id": "S03", "kind": "common", "title": "비가 그친 저녁", "background_id": "bg_cafe_evening", "choice_id": "C03", "synopsis": "완성된 안내물을 함께 보며 서로의 다음 만남을 이야기한다." },
+    { "id": "E01", "kind": "ending", "title": "다음 한 잔은 밖에서", "background_id": "bg_cafe_evening", "optional_cg_id": "cg_next_cup", "synopsis": "서로가 약속을 반긴다는 마음을 확인하고 카페 밖에서 만날 날을 정한다." },
+    { "id": "E02", "kind": "ending", "title": "늘 열려 있는 자리", "background_id": "bg_cafe_evening", "synopsis": "좋아하는 책을 남겨두겠다는 말과 다음 방문의 약속으로 편안한 관계를 이어간다." }
+  ],
+  "choices": [
+    {
+      "id": "C01", "scene_id": "S01", "next": { "scene_id": "S02" },
+      "options": [
+        { "id": "C01_A", "label": "이 책을 고른 이유가 궁금해요.", "affection_delta": 1, "reaction_expression_id": "expr_smile", "reaction_draft": "서윤은 책갈피를 만지며 맞은편 의자를 조금 당겼다." },
+        { "id": "C01_B", "label": "오늘은 조용히 읽다가 갈게요.", "affection_delta": 0, "reaction_expression_id": "expr_neutral", "reaction_draft": "서윤은 고개를 끄덕이고 따뜻한 물을 한 잔 더 놓아주었다." }
+      ]
+    },
+    {
+      "id": "C02", "scene_id": "S02", "next": { "scene_id": "S03" },
+      "options": [
+        { "id": "C02_A", "label": "같이 아이디어를 정해볼까요?", "affection_delta": 1, "reaction_expression_id": "expr_smile", "reaction_draft": "서윤은 어떤 분위기의 모임을 만들고 싶은지부터 이야기했다." },
+        { "id": "C02_B", "label": "완성하면 꼭 보여주세요.", "affection_delta": 0, "reaction_expression_id": "expr_thoughtful", "reaction_draft": "서윤은 완성되면 제일 먼저 보여주겠다며 메모를 접었다." }
+      ]
+    },
+    {
+      "id": "C03", "scene_id": "S03", "next": { "ending_rule": "affection_threshold" },
+      "options": [
+        { "id": "C03_A", "label": "다음에는 제가 좋아하는 곳도 같이 가요.", "affection_delta": 1, "reaction_expression_id": "expr_shy", "reaction_draft": "서윤은 날짜를 묻기 전에 작은 웃음을 보였다." },
+        { "id": "C03_B", "label": "다음에도 여기서 이야기하고 싶어요.", "affection_delta": 0, "reaction_expression_id": "expr_smile", "reaction_draft": "서윤은 늘 앉던 창가 자리를 바라보며 좋다고 답했다." }
+      ]
+    }
+  ],
+  "ending_rule": {
+    "id": "affection_threshold", "threshold": 2,
+    "at_or_above_scene_id": "E01", "below_scene_id": "E02",
+    "additional_required_choices": []
+  },
+  "draft_scope": {
+    "common_dialogue_units_target": 130,
+    "dialogue_units_per_ending_target": 20,
+    "total_script_characters_target": { "min": 6000, "max": 8000, "includes_spaces": true },
+    "full_dialogue_written": false,
+    "runtime_implementation_started": false
+  }
+}

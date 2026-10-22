@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "status": "planned_not_created",
+  "created_on": "2026-10-22",
+  "notes": "ID는 제작 관리용입니다. 실제 파일명은 제작일에 맞춰 정합니다.",
+  "assets": [
+    { "id": "bg_cafe_rain", "kind": "background", "description": "창밖으로 비가 보이는 작은 카페의 낮", "required": true, "status": "planned", "source": null, "license": null },
+    { "id": "bg_cafe_evening", "kind": "background", "description": "같은 카페의 비가 그친 저녁, 낮 배경과 구도 공유", "required": true, "status": "planned", "source": null, "license": null },
+    { "id": "expr_neutral", "kind": "character_variant", "character_id": "seoyun", "description": "차분한 기본 표정, 기본 포즈", "required": true, "status": "planned", "source": null, "license": null },
+    { "id": "expr_smile", "kind": "character_variant", "character_id": "seoyun", "description": "미소, 기본 포즈 공유", "required": true, "status": "planned", "source": null, "license": null },
+    { "id": "expr_thoughtful", "kind": "character_variant", "character_id": "seoyun", "description": "생각하는 표정, 기본 포즈 공유", "required": true, "status": "planned", "source": null, "license": null },
+    { "id": "expr_shy", "kind": "character_variant", "character_id": "seoyun", "description": "수줍은 표정, 기본 포즈 공유", "required": true, "status": "planned", "source": null, "license": null },
+    { "id": "cg_next_cup", "kind": "ending_cg", "description": "카페 밖 다음 약속을 보여주는 엔딩 그림 1장", "required": false, "status": "deferred", "fallback_background_id": "bg_cafe_evening", "source": null, "license": null },
+    { "id": "bgm_cafe", "kind": "music", "description": "대화를 가리지 않는 카페용 반복 음악", "required": true, "status": "planned", "source": null, "license": null },
+    { "id": "bgm_ending", "kind": "music", "description": "두 엔딩에서 공통 사용 가능한 짧은 음악", "required": true, "status": "planned", "source": null, "license": null },
+    { "id": "sfx_confirm", "kind": "sfx", "description": "대사 확인", "required": true, "status": "planned", "source": null, "license": null },
+    { "id": "sfx_select", "kind": "sfx", "description": "선택지 확정", "required": true, "status": "planned", "source": null, "license": null },
+    { "id": "sfx_transition", "kind": "sfx", "description": "장면 전환", "required": true, "status": "planned", "source": null, "license": null }
+  ],
+  "ui_plan": {
+    "prototype": "Godot 기본 컨트롤과 임시 색상으로 구성",
+    "font": "시제품은 한국어를 표시할 수 있는 로컬 시스템 글꼴 사용, 배포 글꼴과 이용 조건은 26단계에서 선정",
+    "custom_ui_image_required_for_prototype": false
+  }
+}
