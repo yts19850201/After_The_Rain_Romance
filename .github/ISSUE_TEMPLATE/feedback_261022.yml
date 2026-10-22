@@ -1,0 +1,30 @@
+name: 플레이 피드백과 오류 제보
+description: 읽기 시간, 어색한 대사, 실행·저장 문제를 알려주세요.
+title: "[v0.1.0] "
+body:
+  - type: markdown
+    attributes:
+      value: "공개되는 내용입니다. 실명·연락처·계정 정보나 개인 파일은 올리지 않아도 됩니다."
+  - type: input
+    id: version
+    attributes:
+      label: 버전과 Windows 환경
+      placeholder: v0.1.0 / Windows 11 x64
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: 플레이 결과 또는 문제
+      description: 엔딩과 읽기 시간, 또는 실제로 발생한 문제를 적어주세요.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 다시 발생시키는 순서
+      description: 오류라면 어떤 장면에서 어떤 버튼을 눌렀는지 적어주세요.
+  - type: textarea
+    id: expected
+    attributes:
+      label: 기대한 결과와 개선 제안

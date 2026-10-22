@@ -33,6 +33,14 @@ var music_tween: Tween
 
 
 func _ready() -> void:
+	var arguments: PackedStringArray = OS.get_cmdline_user_args()
+	if arguments.has("--verify-release"):
+		var data_index: int = arguments.find("--qa-data")
+		if data_index < 0 or data_index + 1 >= arguments.size() or not arguments[data_index + 1].is_absolute_path():
+			push_error("Release verification requires an absolute --qa-data folder")
+			get_tree().quit(1)
+			return
+		user_data_root = arguments[data_index + 1]
 	super._ready()
 	for button in [choice_a, choice_b]:
 		for connection in button.pressed.get_connections():
@@ -43,6 +51,10 @@ func _ready() -> void:
 	_load_preferences()
 	ui_ready = true
 	show_menu()
+	if arguments.has("--verify-release"):
+		var verifier: Node = load("res://scripts/release_verification_261022.gd").new()
+		add_child(verifier)
+		verifier.call_deferred("run", self)
 
 
 func _load_dialogue() -> bool:
@@ -324,7 +336,7 @@ func _build_ui() -> void:
 	$Menu/Margin.add_theme_constant_override("margin_top", 20)
 	$Menu/Margin.add_theme_constant_override("margin_bottom", 20)
 	$Menu/Margin/Content/Title.add_theme_font_size_override("font_size", 34)
-	$Menu/Margin/Content/Subtitle.text = "세 번의 만남, 두 가지 다음 이야기"
+	$Menu/Margin/Content/Subtitle.text = "세 번의 만남, 두 가지 다음 이야기 · v0.1.0"
 	$Menu/Margin/Content/Hint.text = "클릭 · Enter · Space로 대화 / Esc로 잠깐 멈춤"
 	start_button.text = "새 이야기"
 	start_button.custom_minimum_size.y = 44
@@ -564,7 +576,16 @@ func _open_credits() -> void:
 	_open_overlay("credits", "제작 · 자산 정보")
 	_label("비가 그치면, 한 잔 더\nGodot 게임 제작 학습 프로젝트", 22)
 	_label("대본 · 프로그래밍 · 합성 음악/효과음: 이 프로젝트에서 제작\n배경 2종 · 서윤 표정 4종: OpenAI image_gen으로 생성\n글꼴: Noto Sans KR / Adobe / SIL Open Font License 1.1\n게임 엔진: Godot / MIT License", 18)
-	_label("자세한 출처와 생성 기록은 프로젝트의 assets 폴더에 있습니다.\n서윤 28세 · 주인공 29세. 짧은 만남과 관계를 다룬 오리지널 이야기입니다.", 18)
+	_label("v0.1.0 · 자세한 출처는 배포본에 동봉된 licenses 폴더에 있습니다.\n서윤 28세 · 주인공 29세. 짧은 만남과 관계를 다룬 오리지널 이야기입니다.\n그림과 대본 등은 AI 도움으로 제작했으며 실행 중 AI를 사용하지 않습니다.", 18)
+	_button("엔진 · 글꼴 라이선스 전문", _open_licenses, overlay_content)
+	_close_button()
+
+
+func _open_licenses() -> void:
+	_open_overlay("licenses", "엔진 · 글꼴 라이선스")
+	_label(Engine.get_license_text(), 17)
+	_label(FileAccess.get_file_as_string("res://assets/fonts/NotoSansKR_OFL_261022.txt"), 17)
+	_label("추가 엔진 구성 요소의 고지는 배포본 licenses/Godot_ThirdParty_261022.txt에 포함되어 있습니다.", 17)
 	_close_button()
 
 

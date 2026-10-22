@@ -9,3 +9,4 @@ tmp/
 export_credentials.cfg
 Thumbs.db
 .DS_Store
+distribution/**/*.import
