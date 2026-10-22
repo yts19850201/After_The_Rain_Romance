@@ -53,6 +53,7 @@
     "dialogue_units_per_ending_target": 20,
     "total_script_characters_target": { "min": 6000, "max": 8000, "includes_spaces": true },
     "full_dialogue_written": false,
-    "runtime_implementation_started": false
+    "runtime_implementation_started": true,
+    "runtime_status": "S01_and_C01_prototype_ready"
   }
 }

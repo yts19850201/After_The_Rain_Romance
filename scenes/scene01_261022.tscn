@@ -1,0 +1,280 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://scripts/scene01_261022.gd" id="1"]
+[ext_resource type="Script" path="res://scripts/cafe_placeholder_261022.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/portrait_placeholder_261022.gd" id="3"]
+
+[sub_resource type="SystemFont" id="Font"]
+font_names = PackedStringArray("Malgun Gothic", "Noto Sans CJK KR", "Noto Sans KR")
+
+[sub_resource type="StyleBoxFlat" id="Panel"]
+bg_color = Color(0.075, 0.12, 0.14, 0.96)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.76, 0.64, 0.43, 0.8)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_left = 12
+corner_radius_bottom_right = 12
+
+[sub_resource type="StyleBoxFlat" id="Card"]
+bg_color = Color(0.075, 0.12, 0.14, 0.97)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_left = 16
+corner_radius_bottom_right = 16
+
+[sub_resource type="StyleBoxFlat" id="Button"]
+bg_color = Color(0.9, 0.83, 0.7, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_left = 8
+corner_radius_bottom_right = 8
+content_margin_left = 20.0
+content_margin_right = 20.0
+content_margin_top = 10.0
+content_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="Hover"]
+bg_color = Color(0.98, 0.92, 0.81, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_left = 8
+corner_radius_bottom_right = 8
+content_margin_left = 20.0
+content_margin_right = 20.0
+content_margin_top = 10.0
+content_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="Pressed"]
+bg_color = Color(0.72, 0.65, 0.52, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_left = 8
+corner_radius_bottom_right = 8
+content_margin_left = 20.0
+content_margin_right = 20.0
+content_margin_top = 10.0
+content_margin_bottom = 10.0
+
+[sub_resource type="StyleBoxFlat" id="Focus"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.76, 0.33, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_left = 8
+corner_radius_bottom_right = 8
+
+[sub_resource type="Theme" id="Theme"]
+default_font = SubResource("Font")
+default_font_size = 22
+Label/colors/font_color = Color(0.96, 0.92, 0.83, 1)
+RichTextLabel/colors/default_color = Color(0.96, 0.92, 0.83, 1)
+Button/colors/font_color = Color(0.1, 0.17, 0.19, 1)
+Button/colors/font_hover_color = Color(0.1, 0.17, 0.19, 1)
+Button/colors/font_pressed_color = Color(0.1, 0.17, 0.19, 1)
+Button/colors/font_focus_color = Color(0.1, 0.17, 0.19, 1)
+Button/styles/normal = SubResource("Button")
+Button/styles/hover = SubResource("Hover")
+Button/styles/pressed = SubResource("Pressed")
+Button/styles/focus = SubResource("Focus")
+PanelContainer/styles/panel = SubResource("Panel")
+
+[node name="Scene01" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme")
+script = ExtResource("1")
+
+[node name="Background" type="Node2D" parent="."]
+script = ExtResource("2")
+
+[node name="Portrait" type="Node2D" parent="."]
+position = Vector2(930, 465)
+script = ExtResource("3")
+
+[node name="Shade" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0.05, 0.08, 0.1, 0.12)
+
+[node name="Chapter" type="PanelContainer" parent="."]
+layout_mode = 1
+anchor_left = 0.05
+anchor_top = 0.035
+anchor_right = 0.95
+anchor_bottom = 0.105
+mouse_filter = 2
+[node name="Label" type="Label" parent="Chapter"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 18
+text = "비가 그치면, 한 잔 더  ·  비를 피한 자리"
+horizontal_alignment = 1
+
+[node name="Menu" type="PanelContainer" parent="."]
+layout_mode = 1
+anchor_left = 0.06
+anchor_top = 0.2
+anchor_right = 0.55
+anchor_bottom = 0.82
+theme_override_styles/panel = SubResource("Card")
+[node name="Margin" type="MarginContainer" parent="Menu"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 28
+[node name="Content" type="VBoxContainer" parent="Menu/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+[node name="Title" type="Label" parent="Menu/Margin/Content"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 42
+text = "비가 그치면,\n한 잔 더"
+[node name="Subtitle" type="Label" parent="Menu/Margin/Content"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.86, 0.72, 0.48, 1)
+theme_override_font_sizes/font_size = 18
+text = "첫 만남 · 비를 피한 자리"
+[node name="Premise" type="Label" parent="Menu/Margin/Content"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "비를 피해 들어간 작은 카페.\n잠깐의 대화가 다음 약속이 될까요?"
+autowrap_mode = 3
+[node name="Start" type="Button" parent="Menu/Margin/Content"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 52)
+text = "첫 만남 시작"
+[node name="Hint" type="Label" parent="Menu/Margin/Content"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "클릭 · Enter · Space로 대화 / Esc로 시작 화면"
+autowrap_mode = 3
+
+[node name="Dialogue" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchor_left = 0.05
+anchor_top = 0.61
+anchor_right = 0.95
+anchor_bottom = 0.96
+[node name="Margin" type="MarginContainer" parent="Dialogue"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 26
+theme_override_constants/margin_top = 18
+theme_override_constants/margin_right = 26
+theme_override_constants/margin_bottom = 18
+[node name="Content" type="VBoxContainer" parent="Dialogue/Margin"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+[node name="Speaker" type="Label" parent="Dialogue/Margin/Content"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.9, 0.76, 0.5, 1)
+theme_override_font_sizes/font_size = 22
+text = "서윤"
+[node name="Body" type="RichTextLabel" parent="Dialogue/Margin/Content"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 104)
+size_flags_vertical = 3
+mouse_filter = 2
+theme_override_font_sizes/normal_font_size = 24
+scroll_active = false
+bbcode_enabled = false
+[node name="Footer" type="HBoxContainer" parent="Dialogue/Margin/Content"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 16
+[node name="Hint" type="Label" parent="Dialogue/Margin/Content/Footer"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_font_sizes/font_size = 16
+text = "클릭 · Enter · Space로 다음 대화"
+[node name="Next" type="Button" parent="Dialogue/Margin/Content/Footer"]
+layout_mode = 2
+focus_mode = 0
+custom_minimum_size = Vector2(190, 44)
+text = "다음"
+
+[node name="Choices" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchor_left = 0.06
+anchor_top = 0.2
+anchor_right = 0.56
+anchor_bottom = 0.56
+[node name="Margin" type="MarginContainer" parent="Choices"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 20
+[node name="Content" type="VBoxContainer" parent="Choices/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+[node name="Prompt" type="Label" parent="Choices/Margin/Content"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "어떻게 답할까요?"
+[node name="A" type="Button" parent="Choices/Margin/Content"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 56)
+text = "이 책을 고른 이유가 궁금해요."
+[node name="B" type="Button" parent="Choices/Margin/Content"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 56)
+text = "오늘은 조용히 읽다가 갈게요."
+
+[node name="Complete" type="PanelContainer" parent="."]
+visible = false
+layout_mode = 1
+anchor_left = 0.23
+anchor_top = 0.25
+anchor_right = 0.77
+anchor_bottom = 0.78
+theme_override_styles/panel = SubResource("Card")
+[node name="Margin" type="MarginContainer" parent="Complete"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 28
+[node name="Content" type="VBoxContainer" parent="Complete/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 18
+[node name="Title" type="Label" parent="Complete/Margin/Content"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "첫 만남을 마쳤습니다"
+horizontal_alignment = 1
+[node name="Summary" type="Label" parent="Complete/Margin/Content"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "비를 피하던 잠깐의 시간이 끝났습니다.\n다시 읽으며 다른 답변도 골라보세요."
+horizontal_alignment = 1
+autowrap_mode = 3
+[node name="Replay" type="Button" parent="Complete/Margin/Content"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 50)
+text = "다시 읽기"
+[node name="Menu" type="Button" parent="Complete/Margin/Content"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 50)
+text = "시작 화면으로"
