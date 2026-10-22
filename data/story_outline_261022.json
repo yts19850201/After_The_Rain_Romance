@@ -11,7 +11,15 @@
     { "id": "player", "name": null, "age": 29, "role": "player", "gender": "unspecified", "viewpoint": "first_person", "occupation": "프리랜서 일러스트레이터", "portrait_required": false },
     { "id": "seoyun", "name": "서윤", "age": 28, "role": "love_interest", "occupation": "작은 카페 운영자", "portrait_required": true }
   ],
-  "affection": { "initial": 0, "min": 0, "max": 3, "display_number": false },
+  "affection": {
+    "initial": 0, "min": 0, "max": 3, "display_number": true,
+    "levels": [
+      { "min": 0, "label": "낯선 사이" },
+      { "min": 1, "label": "알아가는 사이" },
+      { "min": 2, "label": "편안한 사이" },
+      { "min": 3, "label": "가까운 사이" }
+    ]
+  },
   "start_scene_id": "S01",
   "scenes": [
     { "id": "S01", "kind": "common", "title": "비를 피한 자리", "background_id": "bg_cafe_rain", "choice_id": "C01", "synopsis": "비를 피해 들어간 카페에서 서윤이 고른 책으로 첫 대화를 시작한다." },

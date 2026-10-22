@@ -4,6 +4,10 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 $projectDirectory = Split-Path -Parent $PSScriptRoot
+$projectText = Get-Content -LiteralPath (Join-Path $projectDirectory 'project.godot') -Raw
+if ($projectText -notmatch 'config/version="0\.1\.0"') {
+    throw 'This packager targets v0.1.0. Development builds use the editor or run_game_261022.cmd; prepare the next release package in stage 35.'
+}
 $exportDirectory = Join-Path $projectDirectory 'builds/Windows_261022'
 $exportBinary = Join-Path $exportDirectory 'AfterTheRain_261022.exe'
 if (-not $GodotExe) {

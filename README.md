@@ -2,6 +2,8 @@
 
 Godot로 만든 한국어 2D 연애 비주얼 노벨입니다. 세 번의 카페 방문과 세 선택, 두 엔딩을 담았습니다.
 
+현재 소스는 **31단계 관계 표시 실습(`0.2.0-dev31`)**입니다. [실습 안내](lessons/lesson31_261022.md)를 참고해 실행 도우미 또는 Godot F5로 확인합니다. 아래 v0.1.0 배포본과 구분하며, 이번 개발 변경은 아직 새 릴리스로 게시하지 않았습니다.
+
 **[Windows 무료 시험 배포본 받기](https://github.com/yts19850201/After_The_Rain_Romance/releases/tag/v0.1.0)** · **[자세한 실행·학습 안내](README_261022.md)**
 
 ZIP을 모두 풀고 `AfterTheRain_261022.exe`를 실행하세요. 같은 폴더의 pck가 필요하며 Godot 설치는 필요하지 않습니다. 소스를 내려받아 편집하려면 Godot 4.7.2 Standard를 사용합니다.

@@ -5,6 +5,8 @@ var user_data_root: String = "user://romance"
 var story: Dictionary = {}
 var all_choices: Dictionary = {}
 var ending_rule: Dictionary = {}
+var relationship_rules: Dictionary = {}
+var relationship_panel: Control
 var selected_choices: Dictionary = {}
 var active_scene_id: String = "S01"
 var phase: String = "common"
@@ -61,6 +63,7 @@ func _load_dialogue() -> bool:
 	story = _read_json("res://data/story_dialogue_261022.json").get("scenes", {})
 	var outline: Dictionary = _read_json("res://data/story_outline_261022.json")
 	ending_rule = outline.get("ending_rule", {})
+	relationship_rules = outline.get("affection", {})
 	for item in outline.get("choices", []):
 		all_choices[item.scene_id] = item
 	return story.size() == 5 and all_choices.size() == 3
@@ -92,6 +95,8 @@ func show_menu() -> void:
 	selected_choices.clear()
 	super.show_menu()
 	toolbar.hide()
+	relationship_panel.hide()
+	relationship_panel.set_state(0)
 	background_art.texture = art.rain
 	character_art.texture = art.neutral
 	$Chapter/Label.text = "비가 그치면, 한 잔 더"
@@ -120,6 +125,13 @@ func _enter_scene(id: String) -> void:
 		choice_b.text = choice_data.options[1].label
 	_apply_scene_art()
 	_show_line()
+	_sync_relationship()
+
+
+func _sync_relationship() -> void:
+	if relationship_panel:
+		relationship_panel.visible = mode != Mode.MENU and not gallery_replay
+		relationship_panel.set_state(affection)
 
 
 func _apply_scene_art() -> void:
@@ -150,6 +162,8 @@ func _process(delta: float) -> void:
 		toast.visible = toast_time > 0.0
 	if not overlay_kind.is_empty() or transitioning:
 		return
+	if relationship_panel:
+		relationship_panel.tick(delta)
 	super._process(delta)
 
 
@@ -176,6 +190,7 @@ func advance() -> void:
 
 func _offer_choice() -> void:
 	phase = "choice"
+	relationship_panel.clear_feedback()
 	mode = Mode.CHOICE
 	typing = false
 	choices_panel.show()
@@ -204,6 +219,7 @@ func _select_option(index: int) -> void:
 	next_button.disabled = false
 	_play_sfx("select")
 	_show_line()
+	relationship_panel.set_state(affection, true)
 
 
 func _score(picks: Dictionary) -> int:
@@ -265,6 +281,7 @@ func _show_complete() -> void:
 	super._show_complete()
 	typing = false
 	toolbar.hide()
+	_sync_relationship()
 	$Complete/Margin/Content/Title.text = scene_data.title
 	$Complete/Margin/Content/Summary.text = scene_data.summary
 
@@ -336,7 +353,7 @@ func _build_ui() -> void:
 	$Menu/Margin.add_theme_constant_override("margin_top", 20)
 	$Menu/Margin.add_theme_constant_override("margin_bottom", 20)
 	$Menu/Margin/Content/Title.add_theme_font_size_override("font_size", 34)
-	$Menu/Margin/Content/Subtitle.text = "세 번의 만남, 두 가지 다음 이야기 · v0.1.0"
+	$Menu/Margin/Content/Subtitle.text = "31단계 실습 · 서윤과의 관계 알아보기"
 	$Menu/Margin/Content/Hint.text = "클릭 · Enter · Space로 대화 / Esc로 잠깐 멈춤"
 	start_button.text = "새 이야기"
 	start_button.custom_minimum_size.y = 44
@@ -354,6 +371,15 @@ func _build_ui() -> void:
 	$Complete/Margin/Content/Title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_button("엔딩 감상", _open_gallery, $Complete/Margin/Content)
 	replay_button.text = "처음부터 다시"
+	relationship_panel = load("res://scripts/relationship_panel_261022.gd").new()
+	relationship_panel.name = "Relationship"
+	add_child(relationship_panel)
+	relationship_panel.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	relationship_panel.anchor_left = 0.05
+	relationship_panel.anchor_right = 0.47
+	relationship_panel.anchor_top = 0.115
+	relationship_panel.anchor_bottom = 0.27
+	relationship_panel.setup(relationship_rules)
 	toolbar = HBoxContainer.new()
 	add_child(toolbar)
 	toolbar.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
@@ -576,7 +602,7 @@ func _open_credits() -> void:
 	_open_overlay("credits", "제작 · 자산 정보")
 	_label("비가 그치면, 한 잔 더\nGodot 게임 제작 학습 프로젝트", 22)
 	_label("대본 · 프로그래밍 · 합성 음악/효과음: 이 프로젝트에서 제작\n배경 2종 · 서윤 표정 4종: OpenAI image_gen으로 생성\n글꼴: Noto Sans KR / Adobe / SIL Open Font License 1.1\n게임 엔진: Godot / MIT License", 18)
-	_label("v0.1.0 · 자세한 출처는 배포본에 동봉된 licenses 폴더에 있습니다.\n서윤 28세 · 주인공 29세. 짧은 만남과 관계를 다룬 오리지널 이야기입니다.\n그림과 대본 등은 AI 도움으로 제작했으며 실행 중 AI를 사용하지 않습니다.", 18)
+	_label(str(ProjectSettings.get_setting("application/config/version")) + " · 자세한 출처는 assets/ASSET_SOURCES_261022.md에 있습니다.\n서윤 28세 · 주인공 29세. 짧은 만남과 관계를 다룬 오리지널 이야기입니다.\n그림과 대본 등은 AI 도움으로 제작했으며 실행 중 AI를 사용하지 않습니다.", 18)
 	_button("엔진 · 글꼴 라이선스 전문", _open_licenses, overlay_content)
 	_close_button()
 
